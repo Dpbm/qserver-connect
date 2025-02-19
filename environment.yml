@@ -1,0 +1,10 @@
+name: qserver-connect
+channels:
+    - conda-forge
+dependencies:
+    - pip
+    - python=3.12
+    - pip:
+          - grpcio
+          - requests
+          - pytest
