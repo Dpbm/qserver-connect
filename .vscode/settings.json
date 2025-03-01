@@ -1,7 +1,11 @@
 {
-    "cSpell.words": [
-        "grpcio",
-        "pytest",
-        "qserver"
-    ]
+	"cSpell.words": [
+		"github",
+		"grpcio",
+		"oneof",
+		"protoc",
+		"pytest",
+		"qasm",
+		"qserver"
+	]
 }

@@ -1,1 +1,3 @@
 pytest
+grpcio-tools
+requests

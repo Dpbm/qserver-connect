@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option go_package = "github.com/Dpbm/jobs_server";
+
+service Jobs{
+	rpc AddJob (stream JobData) returns (PendingJob) {}
+}
+
+message JobProperties{
+	bool resultTypeCounts = 1;
+	bool resultTypeQuasiDist = 2;
+	bool resultTypeExpVal = 3;
+	string targetSimulator = 4;
+	optional string metadata = 5;
+}
+
+
+message JobData{
+	oneof DataStream{
+		JobProperties properties = 1;
+		string qasmChunk = 2;
+	}
+}
+
+message PendingJob{
+	string id = 1;
+}

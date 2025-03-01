@@ -8,3 +8,5 @@ dependencies:
           - grpcio
           - requests
           - pytest
+          - grpcio-tools
+          - requests
