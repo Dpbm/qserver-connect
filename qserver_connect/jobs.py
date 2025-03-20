@@ -1,9 +1,9 @@
-import requests as req
-
-import grpc
 import json
-
-from .utils import get_url
+import logging
+import requests as req
+import grpc
+from http import HTTPStatus
+from .url import URL, HTTP
 from .data_types import (
     Response, 
     Metadata, 
@@ -15,17 +15,17 @@ from .data_types import (
     JobId, 
     AllData
 )
-from .exceptions import FailedOnGetJob
-
+from .exceptions import FailedOnGetJobResult, FailedOnGetJobData, JobNotFound
 from .jobs_pb2 import JobData,JobProperties
 from .jobs_pb2_grpc import JobsStub
 
+logger = logging.getLogger(__name__)
 
 class Data:
     def __init__(self, all_data:AllData):
         self._iteration = 0
         self._qasm_path = all_data['qasm']
-        self._first_batch = self.prepare_first_batch(all_data)
+        self._first_batch = Data.prepare_first_batch(all_data)
 
     @staticmethod
     def prepare_first_batch(data:AllData) -> JobData:
@@ -67,10 +67,13 @@ class Data:
         return batch
 
 class Jobs:
-    def __init__(self, host:str, port:int):
+    def __init__(self, host:str, http_port:int, grpc_port:int, secure_connection:bool=True):
         self._host = host
-        self._port = port
-        self._full_url = f"{host}:{port}"
+        self._http_port = http_port
+        self._grpc_port = grpc_port
+        self._secure = secure_connection
+        self._http_handler = URL(host, http_port, http=HTTP(secure_connection))
+        self._grpc_handler = URL(host, grpc_port, http=HTTP(secure_connection))
 
     def send_job(self, 
         qasm_path:QasmPath, 
@@ -80,12 +83,15 @@ class Jobs:
         target_simualtor:Simulator, 
         metadata:Metadata = {}) -> JobId:
 
-        with grpc.insecure_channel(
-                get_url(self._full_url, "add"), 
-                compression=grpc.Compression.Gzip) as channel:
+        logger.debug('adding job')
+        url = self._grpc_handler.get_add_job_url()
+        logger.debug('using url: %s', url)
+
+
+        # TODO: add secure channel
+        with grpc.insecure_channel(url, compression=grpc.Compression.Gzip) as channel:
 
             stub = JobsStub(channel)
-
             all_data = {
                 "qasm": qasm_path,
                 "counts": get_counts,
@@ -95,15 +101,65 @@ class Jobs:
                 "metadata":metadata
             }
 
+            logger.debug("Sending data: %s", all_data)
+
             job = stub.AddJob(Data(all_data))
-            return job.id
+            job_id = job.id
 
+            logger.debug("Got job id: %s", job_id)
 
-    def get_job(self, job_id:str) -> Response:
-        response_data = req.get(get_url(self._full_url, "get", job_id))
-        json_data = response_data.json()
+            return job_id
 
-        if(response_data.status_code != 200 or len(json_data.items()) <= 0):
-            raise FailedOnGetJob()
+    def get_job_data(self, job_id:str) -> Response:
+        logger.debug('getting job data: %s', job_id)
+        url = self._http_handler.get_job_data_url(job_id)
+        logger.debug('using url: %s', url)
+
+        json_data = {}
+        response_status = HTTPStatus.BAD_REQUEST
+
+        try:
+            response_data = req.get(url)
+            json_data = response_data.json()
+            response_status = response_data.status_code
+
+        except Exception as error:
+            logger.error("Failed on get job data: %s")
+            logger.error(str(error))
+            raise FailedOnGetJobData()
+
+        if (response_status == HTTPStatus.NOT_FOUND):
+            raise JobNotFound(job_id)
+        elif(len(json_data) <= 0 or response_status != HTTPStatus.OK):
+            raise FailedOnGetJobData()
 
         return json_data
+
+
+    def get_job_result(self, job_id:str) -> Response:
+        logger.debug('getting job result: %s', job_id)
+        url = self._http_handler.get_job_result_url(job_id)
+        logger.debug('using url: %s', url)
+
+        json_data = {}
+        response_status = HTTPStatus.BAD_REQUEST
+
+        try:
+            response_data = req.get(url)
+            json_data = response_data.json()
+            response_status = response_data.status_code
+
+        except Exception as error:
+            logger.error("Failed on get job results data")
+            logger.error(str(error))
+            raise FailedOnGetJobResult()
+
+        if (response_status == HTTPStatus.NOT_FOUND):
+            raise JobNotFound(job_id)
+        elif(len(json_data) <= 0 or response_status != HTTPStatus.OK):
+            raise FailedOnGetJobResult()
+
+        return json_data
+        
+        
+

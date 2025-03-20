@@ -11,3 +11,5 @@ tdg q[3];
 s q[0];
 z q[1];
 p(pi/2) q[2];
+
+measure q -> c;
