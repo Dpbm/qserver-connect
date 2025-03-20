@@ -31,3 +31,13 @@ class PendingJob(_message.Message):
     ID_FIELD_NUMBER: _ClassVar[int]
     id: str
     def __init__(self, id: _Optional[str] = ...) -> None: ...
+
+class HealthCheckInput(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class Health(_message.Message):
+    __slots__ = ("status",)
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    status: str
+    def __init__(self, status: _Optional[str] = ...) -> None: ...

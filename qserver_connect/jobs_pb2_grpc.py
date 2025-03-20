@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import qserver_connect.jobs_pb2 as jobs__pb2
+import jobs_pb2 as jobs__pb2
 
 GRPC_GENERATED_VERSION = '1.70.0'
 GRPC_VERSION = grpc.__version__
@@ -39,12 +39,23 @@ class JobsStub(object):
                 request_serializer=jobs__pb2.JobData.SerializeToString,
                 response_deserializer=jobs__pb2.PendingJob.FromString,
                 _registered_method=True)
+        self.HealthCheck = channel.unary_unary(
+                '/Jobs/HealthCheck',
+                request_serializer=jobs__pb2.HealthCheckInput.SerializeToString,
+                response_deserializer=jobs__pb2.Health.FromString,
+                _registered_method=True)
 
 
 class JobsServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def AddJob(self, request_iterator, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def HealthCheck(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -57,6 +68,11 @@ def add_JobsServicer_to_server(servicer, server):
                     servicer.AddJob,
                     request_deserializer=jobs__pb2.JobData.FromString,
                     response_serializer=jobs__pb2.PendingJob.SerializeToString,
+            ),
+            'HealthCheck': grpc.unary_unary_rpc_method_handler(
+                    servicer.HealthCheck,
+                    request_deserializer=jobs__pb2.HealthCheckInput.FromString,
+                    response_serializer=jobs__pb2.Health.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -86,6 +102,33 @@ class Jobs(object):
             '/Jobs/AddJob',
             jobs__pb2.JobData.SerializeToString,
             jobs__pb2.PendingJob.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def HealthCheck(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/Jobs/HealthCheck',
+            jobs__pb2.HealthCheckInput.SerializeToString,
+            jobs__pb2.Health.FromString,
             options,
             channel_credentials,
             insecure,
