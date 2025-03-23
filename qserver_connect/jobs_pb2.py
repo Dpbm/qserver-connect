@@ -9,39 +9,35 @@ from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import runtime_version as _runtime_version
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf.internal import builder as _builder
+
 _runtime_version.ValidateProtobufRuntimeVersion(
-    _runtime_version.Domain.PUBLIC,
-    5,
-    29,
-    0,
-    '',
-    'jobs.proto'
+    _runtime_version.Domain.PUBLIC, 5, 29, 0, "", "jobs.proto"
 )
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
-
-
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\njobs.proto\"\x8b\x01\n\rJobProperties\x12\x18\n\x10resultTypeCounts\x18\x01 \x01(\x08\x12\x1b\n\x13resultTypeQuasiDist\x18\x02 \x01(\x08\x12\x18\n\x10resultTypeExpVal\x18\x03 \x01(\x08\x12\x17\n\x0ftargetSimulator\x18\x04 \x01(\t\x12\x10\n\x08metadata\x18\x05 \x01(\t\"R\n\x07JobData\x12$\n\nproperties\x18\x01 \x01(\x0b\x32\x0e.JobPropertiesH\x00\x12\x13\n\tqasmChunk\x18\x02 \x01(\tH\x00\x42\x0c\n\nDataStream\"\x18\n\nPendingJob\x12\n\n\x02id\x18\x01 \x01(\t\"\x12\n\x10HealthCheckInput\"\x18\n\x06Health\x12\x0e\n\x06status\x18\x01 \x01(\t2X\n\x04Jobs\x12#\n\x06\x41\x64\x64Job\x12\x08.JobData\x1a\x0b.PendingJob\"\x00(\x01\x12+\n\x0bHealthCheck\x12\x11.HealthCheckInput\x1a\x07.Health\"\x00\x42\x1dZ\x1bgithub.com/Dpbm/jobs_serverb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n\njobs.proto"\x8b\x01\n\rJobProperties\x12\x18\n\x10resultTypeCounts\x18\x01 \x01(\x08\x12\x1b\n\x13resultTypeQuasiDist\x18\x02 \x01(\x08\x12\x18\n\x10resultTypeExpVal\x18\x03 \x01(\x08\x12\x17\n\x0ftargetSimulator\x18\x04 \x01(\t\x12\x10\n\x08metadata\x18\x05 \x01(\t"R\n\x07JobData\x12$\n\nproperties\x18\x01 \x01(\x0b\x32\x0e.JobPropertiesH\x00\x12\x13\n\tqasmChunk\x18\x02 \x01(\tH\x00\x42\x0c\n\nDataStream"\x18\n\nPendingJob\x12\n\n\x02id\x18\x01 \x01(\t"\x12\n\x10HealthCheckInput"\x18\n\x06Health\x12\x0e\n\x06status\x18\x01 \x01(\t2X\n\x04Jobs\x12#\n\x06\x41\x64\x64Job\x12\x08.JobData\x1a\x0b.PendingJob"\x00(\x01\x12+\n\x0bHealthCheck\x12\x11.HealthCheckInput\x1a\x07.Health"\x00\x42\x1dZ\x1bgithub.com/Dpbm/jobs_serverb\x06proto3'
+)
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
-_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'jobs_pb2', _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "jobs_pb2", _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
-  _globals['DESCRIPTOR']._loaded_options = None
-  _globals['DESCRIPTOR']._serialized_options = b'Z\033github.com/Dpbm/jobs_server'
-  _globals['_JOBPROPERTIES']._serialized_start=15
-  _globals['_JOBPROPERTIES']._serialized_end=154
-  _globals['_JOBDATA']._serialized_start=156
-  _globals['_JOBDATA']._serialized_end=238
-  _globals['_PENDINGJOB']._serialized_start=240
-  _globals['_PENDINGJOB']._serialized_end=264
-  _globals['_HEALTHCHECKINPUT']._serialized_start=266
-  _globals['_HEALTHCHECKINPUT']._serialized_end=284
-  _globals['_HEALTH']._serialized_start=286
-  _globals['_HEALTH']._serialized_end=310
-  _globals['_JOBS']._serialized_start=312
-  _globals['_JOBS']._serialized_end=400
+    _globals["DESCRIPTOR"]._loaded_options = None
+    _globals["DESCRIPTOR"]._serialized_options = b"Z\033github.com/Dpbm/jobs_server"
+    _globals["_JOBPROPERTIES"]._serialized_start = 15
+    _globals["_JOBPROPERTIES"]._serialized_end = 154
+    _globals["_JOBDATA"]._serialized_start = 156
+    _globals["_JOBDATA"]._serialized_end = 238
+    _globals["_PENDINGJOB"]._serialized_start = 240
+    _globals["_PENDINGJOB"]._serialized_end = 264
+    _globals["_HEALTHCHECKINPUT"]._serialized_start = 266
+    _globals["_HEALTHCHECKINPUT"]._serialized_end = 284
+    _globals["_HEALTH"]._serialized_start = 286
+    _globals["_HEALTH"]._serialized_end = 310
+    _globals["_JOBS"]._serialized_start = 312
+    _globals["_JOBS"]._serialized_end = 400
 # @@protoc_insertion_point(module_scope)

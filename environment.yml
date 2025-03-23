@@ -8,5 +8,14 @@ dependencies:
           - grpcio
           - requests
           - pytest
+          - black
+          - pylint
+          - tox
+          - mypy
           - grpcio-tools
           - requests
+          - qiskit==1.3.2
+          - setuptools
+          - types-setuptools
+          - types-protobuf
+          - types-requests

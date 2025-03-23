@@ -1,13 +1,17 @@
 import pytest
 import os
 from qserver_connect import Jobs, Plugin
-from qserver_connect.exceptions import FailedOnGetJobData, FailedOnGetJobResult, FailedOnDeletePlugin
+from qserver_connect.exceptions import (
+    FailedOnGetJobData,
+    FailedOnGetJobResult,
+    FailedOnDeletePlugin,
+)
 
 
-DEFAULT_PLUGIN = 'aer-plugin'
+DEFAULT_PLUGIN = "aer-plugin"
 host = os.getenv("HOST")
-port_http = int(os.getenv("PORT_HTTP")) 
-port_grpc = int(os.getenv("PORT_GRPC")) 
+port_http = int(os.getenv("PORT_HTTP"))
+port_grpc = int(os.getenv("PORT_GRPC"))
 
 
 @pytest.fixture(autouse=True)
@@ -32,10 +36,11 @@ class TestPlugins:
         p.add_plugin(DEFAULT_PLUGIN)
         p.delete_plugin(DEFAULT_PLUGIN)
 
-
     def test_delete_plugin_when_job_is_running(self):
         p = Plugin(host=host, port=port_http, secure_connection=False)
-        j = Jobs(host=host, http_port=port_http, grpc_port=port_grpc, secure_connection=False)
+        j = Jobs(
+            host=host, http_port=port_http, grpc_port=port_grpc, secure_connection=False
+        )
 
         p.add_plugin(DEFAULT_PLUGIN)
 
@@ -47,5 +52,4 @@ class TestPlugins:
             target_simualtor="aer",
         )
 
-        p.delete_plugin(DEFAULT_PLUGIN)   
-
+        p.delete_plugin(DEFAULT_PLUGIN)

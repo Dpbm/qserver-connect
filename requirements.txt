@@ -1,2 +1,3 @@
 grpcio
 requests
+qiskit==1.3.2

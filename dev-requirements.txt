@@ -1,3 +1,11 @@
+black
+pylint
+tox
+mypy
 pytest
 grpcio-tools
 requests
+setuptools
+types-setuptools
+types-protobuf
+types-requests

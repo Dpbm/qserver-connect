@@ -1,0 +1,15 @@
+[MAIN]
+
+ignore = 
+        build,
+        __pycache__,
+        .tox,
+        jobs_pb2_grpc.py,
+        jobs_pb2.py,
+        jobs_pb2.pyi
+
+[MESSAGES CONTROL]
+
+disable = 
+        missing-module-docstring,
+        too-few-public-methods
