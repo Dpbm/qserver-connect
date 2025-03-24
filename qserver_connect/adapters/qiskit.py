@@ -3,7 +3,6 @@ import logging
 import os
 import tempfile
 import uuid
-
 from ..exceptions import (
     InvalidObservables,
     FailedOnCreateJob,
@@ -12,7 +11,7 @@ from ..exceptions import (
 )
 
 try:
-    from qiskit import qasm3
+    from qiskit import qasm2
 except ImportError as error:
     raise QiskitError() from error
 
@@ -71,9 +70,11 @@ class Qiskit(Adapter):
                 logger.debug("exporting qc to qasm3...")
 
                 filename = f"{str(uuid.uuid4())}.qasm"
-                qasm_path = os.path.join(tempdir.name, filename)  # type:ignore
+                qasm_path = os.path.join(tempdir, filename)
                 logger.debug("file will be exported to: %s", qasm_path)
-                qasm3.dump(qc, qasm_path)
+
+                with open(qasm_path, "w", encoding="utf-8") as qasm_file:
+                    qasm2.dump(qc, qasm_file)
 
                 logger.debug("filed exported successfully")
                 logger.debug("job created successfully")

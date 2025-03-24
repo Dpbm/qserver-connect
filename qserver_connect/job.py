@@ -16,4 +16,4 @@ class Job:
     @property
     def data(self) -> AllData:
         """Getter for data."""
-        return self.data
+        return self._data

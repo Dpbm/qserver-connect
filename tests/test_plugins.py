@@ -1,8 +1,4 @@
-import pytest
 from qserver_connect import JobConnection, Plugin
-from qserver_connect.exceptions import (
-    FailedOnDeletePlugin,
-)
 
 
 class TestPlugins:
