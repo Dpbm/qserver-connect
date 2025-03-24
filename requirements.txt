@@ -1,3 +1,4 @@
 grpcio
+grpcio-tools
 requests
 qiskit==1.3.2

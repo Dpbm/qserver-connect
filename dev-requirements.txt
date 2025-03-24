@@ -3,7 +3,6 @@ pylint
 tox
 mypy
 pytest
-grpcio-tools
 requests
 setuptools
 types-setuptools

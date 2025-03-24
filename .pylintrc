@@ -12,4 +12,5 @@ ignore =
 
 disable = 
         missing-module-docstring,
-        too-few-public-methods
+        too-few-public-methods,
+        broad-exception-caught

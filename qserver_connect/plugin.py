@@ -30,7 +30,7 @@ class Plugin:
 
         url = self._url_handler.get_add_plugin_url(name)
 
-        status_code = HTTPStatus.BAD_REQUEST
+        status_code = int(HTTPStatus.BAD_REQUEST)
 
         try:
             result = req.post(url, timeout=TIMEOUT_TIME)
@@ -50,7 +50,7 @@ class Plugin:
         """
 
         url = self._url_handler.get_delete_plugin_url(name)
-        status_code = HTTPStatus.BAD_REQUEST
+        status_code = int(HTTPStatus.BAD_REQUEST)
 
         try:
             result = req.delete(url, timeout=TIMEOUT_TIME)

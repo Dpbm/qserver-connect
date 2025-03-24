@@ -16,9 +16,7 @@ try:
 except ImportError as error:
     raise QiskitError() from error
 
-from ..data_types import (
-    CreateJobData,
-)
+from ..data_types import CreateJobData, Metadata
 from ..job import Job
 from .adapter import Adapter
 
@@ -58,7 +56,7 @@ class Qiskit(Adapter):
         if expval and obs is None:
             raise InvalidObservables()
 
-        metadata = {}
+        metadata: Metadata = {}
 
         if expval:
             metadata["obs"] = obs
@@ -73,7 +71,7 @@ class Qiskit(Adapter):
                 logger.debug("exporting qc to qasm3...")
 
                 filename = f"{str(uuid.uuid4())}.qasm"
-                qasm_path = os.path.join(tempdir.name, filename)
+                qasm_path = os.path.join(tempdir.name, filename)  # type:ignore
                 logger.debug("file will be exported to: %s", qasm_path)
                 qasm3.dump(qc, qasm_path)
 

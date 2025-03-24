@@ -2,7 +2,7 @@ import json
 import logging
 from http import HTTPStatus
 import requests as req
-import grpc
+import grpc  # type: ignore
 from .url import URL, HTTP
 from .data_types import (
     Response,
@@ -116,7 +116,7 @@ class JobConnection:
             # once the grpc server checks the data an raise an error when
             # it doesn't match with the schema, we don't need to recheck the data here
             job = stub.AddJob(Data(job_data))
-            job_id = job.id
+            job_id = str(job.id)
             logger.debug("Got job id: %s", job_id)
 
             return job_id
@@ -131,7 +131,7 @@ class JobConnection:
         logger.debug("using url: %s", url)
 
         json_data = {}
-        response_status = HTTPStatus.BAD_REQUEST
+        response_status = int(HTTPStatus.BAD_REQUEST)
 
         try:
             response_data = req.get(url, timeout=TIMEOUT_TIME)
@@ -160,7 +160,7 @@ class JobConnection:
         logger.debug("using url: %s", url)
 
         json_data = {}
-        response_status = HTTPStatus.BAD_REQUEST
+        response_status = int(HTTPStatus.BAD_REQUEST)
 
         try:
             response_data = req.get(url, timeout=TIMEOUT_TIME)

@@ -2,6 +2,7 @@
 	"cSpell.words": [
 		"github",
 		"grpcio",
+		"mypy",
 		"oneof",
 		"protoc",
 		"pytest",
