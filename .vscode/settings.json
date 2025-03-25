@@ -3,8 +3,12 @@
 		"github",
 		"grpcio",
 		"mypy",
+		"ncipollo",
 		"oneof",
 		"protoc",
+		"pypa",
+		"pypi",
+		"PYPI",
 		"pytest",
 		"qasm",
 		"qserver"
