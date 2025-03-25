@@ -31,6 +31,12 @@ jobs:
               with:
                   python-version: ${{ matrix.version }}
 
+            - name: setup server
+              run: |
+                  git clone https://github.com/Dpbm/qserver.git && \
+                  cd qserver && \
+                  docker compose up -d --build
+
             - name: install dependencies
               run: |
                   pip install -r requirements.txt -r dev-requirements.txt
