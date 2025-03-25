@@ -21,7 +21,7 @@ def get_long_description():
 
 setup(
     name="qserver_connect",
-    version="0.0.1",
+    version="0.0.2",
     install_requires=get_requirements(),
     packages=find_packages(exclude=["tests"]),
     classifiers=[
