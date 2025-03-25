@@ -1,5 +1,5 @@
 requires = ["tox>=4"]
-env_list = ["lint", "types", "tests", "py3.12", "py3.11", "py3.10"]
+env_list = ["lint", "types", "tests", "py3.12"]
 
 [env.lint]
 description = "lint code"

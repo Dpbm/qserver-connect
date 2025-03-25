@@ -1,8 +1,6 @@
 from typing import Any
 import logging
-import os
 import tempfile
-import uuid
 from ..exceptions import (
     InvalidObservables,
     FailedOnCreateJob,
@@ -63,14 +61,14 @@ class Qiskit(Adapter):
         if (counts or quasi_dist) and shots is not None:
             metadata["shots"] = shots
 
-        with tempfile.TemporaryDirectory(delete=False) as tempdir:
+        with tempfile.NamedTemporaryFile(
+            delete_on_close=False, delete=False, suffix=".qasm"
+        ) as temp_qasm_file:
 
             try:
 
                 logger.debug("exporting qc to qasm3...")
-
-                filename = f"{str(uuid.uuid4())}.qasm"
-                qasm_path = os.path.join(tempdir, filename)
+                qasm_path = temp_qasm_file.name
                 logger.debug("file will be exported to: %s", qasm_path)
 
                 with open(qasm_path, "w", encoding="utf-8") as qasm_file:

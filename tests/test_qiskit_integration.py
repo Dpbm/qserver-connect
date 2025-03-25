@@ -79,7 +79,6 @@ class TestQiskit:
         assert data["quasi_dist"] is False
         assert data["expval"] is True
         assert data["metadata"] == {"obs": [[("XX", 1)]]}
-        assert data["qasm"] != ""
         assert os.path.exists(data["qasm"]) is True
 
     def test_get_counts_without_shots(self, connection, backend):
@@ -109,7 +108,6 @@ class TestQiskit:
         assert data["quasi_dist"] is False
         assert data["expval"] is False
         assert data["metadata"] == {}
-        assert data["qasm"] != ""
         assert os.path.exists(data["qasm"]) is True
 
     def test_get_counts_with_shots(self, connection, backend):
@@ -139,7 +137,6 @@ class TestQiskit:
         assert data["quasi_dist"] is False
         assert data["expval"] is False
         assert data["metadata"] == {"shots": 120}
-        assert data["qasm"] != ""
         assert os.path.exists(data["qasm"]) is True
 
     def test_qasm_file(self, connection, backend):
