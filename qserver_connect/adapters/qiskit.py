@@ -26,15 +26,6 @@ class Qiskit(Adapter):
     jobs with the IBM quantum framework.
     """
 
-    def __init__(
-        self, host: str, http_port: int, grpc_port: int, secure_connection: bool = True
-    ):
-        """
-        Setup data.
-        """
-
-        super().__init__(host, http_port, grpc_port, secure_connection)
-
     def create_job(self, qc: Any, data: CreateJobData) -> Job:
         """
         Method to retrieve all data necessary to run the job from a qiskit QuantumCircuit object.
