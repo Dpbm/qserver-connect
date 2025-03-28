@@ -1,6 +1,7 @@
 import os
 import pytest
 from qserver_connect import Plugin
+from qserver_connect.job import Job
 
 
 @pytest.fixture
@@ -17,7 +18,7 @@ def connection():
 
 
 @pytest.fixture
-def backend():
+def backend() -> str:
     """
     get backend name
     """
@@ -25,7 +26,7 @@ def backend():
 
 
 @pytest.fixture
-def plugin_name():
+def plugin_name() -> str:
     """
     get the plugin name
     """
@@ -35,36 +36,36 @@ def plugin_name():
 
 @pytest.fixture
 # pylint: disable=redefined-outer-name
-def long_job_data(backend):
+def long_job_data(backend:str) -> Job:
     """
     job data for a time consuming task
     """
 
-    return {
+    return Job({
         "qasm": "./tests/test_big_circuit.qasm",
         "counts": True,
         "expval": False,
         "quasi_dist": False,
         "simulator": backend,
         "metadata": {},
-    }
+    })
 
 
 @pytest.fixture
 # pylint: disable=redefined-outer-name
-def short_job_data(backend):
+def short_job_data(backend:str) -> Job:
     """
     job data for a low time consuming task
     """
 
-    return {
+    return Job({
         "qasm": "./tests/test.qasm",
         "counts": True,
         "expval": False,
         "quasi_dist": False,
         "simulator": backend,
         "metadata": {},
-    }
+    })
 
 
 @pytest.fixture(autouse=True)

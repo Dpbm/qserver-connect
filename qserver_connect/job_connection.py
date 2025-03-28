@@ -11,6 +11,7 @@ from .data_types import (
 )
 from .exceptions import FailedOnGetJobResult, FailedOnGetJobData, JobNotFound
 from .constants import TIMEOUT_TIME
+from .job import Job
 from .jobs_pb2 import JobData, JobProperties  # pylint: disable=no-name-in-module
 from .jobs_pb2_grpc import JobsStub
 
@@ -97,7 +98,7 @@ class JobConnection:
         self._http_handler = URL(host, http_port, http=HTTP(secure_connection))
         self._grpc_handler = URL(host, grpc_port, http=HTTP(secure_connection))
 
-    def send_job(self, job_data: AllData) -> JobId:
+    def send_job(self, job_data: Job) -> JobId:
         """
         Stream job data through GRPC.
         """
@@ -112,10 +113,11 @@ class JobConnection:
 
             stub = JobsStub(channel)
 
-            logger.debug("Sending data: %s", job_data)
+            data = job_data.data
+            logger.debug("Sending data: %s", data)
             # once the grpc server checks the data an raise an error when
             # it doesn't match with the schema, we don't need to recheck the data here
-            job = stub.AddJob(Data(job_data))
+            job = stub.AddJob(Data(data))
             job_id = str(job.id)
             logger.debug("Got job id: %s", job_id)
 
