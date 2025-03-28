@@ -34,7 +34,6 @@ class Qiskit(Adapter):
         """
 
         super().__init__(host, http_port, grpc_port, secure_connection)
-        self._job = None
 
     def create_job(self, qc: Any, data: CreateJobData) -> Job:
         """
