@@ -41,7 +41,6 @@ class Plugin:
             logger.error("Failed on add plugin")
             logger.error(str(error))
             raise FailedOnAddPlugin(name) from error
-        print("AAAAADAJHDAJKDHASJKD ", status_code)
         if status_code != HTTPStatus.CREATED:
             raise FailedOnAddPlugin(name)
 
