@@ -20,7 +20,7 @@ class TestJobs:
         with pytest.raises(FailedOnGetJobResult):
             j.get_job_result("AAAA")
 
-    def test_result_valid_id(self, connection, plugin_name, short_job_data):
+    def test_result_valid_id(self, connection, plugin_name, job_data):
         """should return successfully the results from job"""
 
         host, port_http, port_grpc = connection
@@ -32,7 +32,7 @@ class TestJobs:
 
         p.add_plugin(plugin_name)
 
-        job_id = j.send_job(short_job_data)
+        job_id = j.send_job(job_data)
 
         job_status = "pending"
         while job_status in ["pending", "running"]:
@@ -54,7 +54,7 @@ class TestJobs:
         with pytest.raises(FailedOnGetJobData):
             j.get_job_data("AAAA")
 
-    def test_get_job_data_successfully(self, connection, plugin_name, short_job_data):
+    def test_get_job_data_successfully(self, connection, plugin_name, job_data):
         """should return successfully the data from job"""
 
         host, port_http, port_grpc = connection
@@ -66,6 +66,63 @@ class TestJobs:
 
         p.add_plugin(plugin_name)
 
-        job_id = j.send_job(short_job_data)
+        job_id = j.send_job(job_data)
 
         j.get_job_data(job_id)
+
+    def test_get_all_jobs_with_no_jobs(self, connection):
+        """should return an empty array"""
+        host, port_http, port_grpc = connection
+        j = JobConnection(
+            host=host, http_port=port_http, grpc_port=port_grpc, secure_connection=False
+        )
+
+        jobs = j.get_all_jobs()
+
+        assert len(jobs) == 0
+
+    def test_get_all_jobs_with_two_jobs(self, connection, plugin_name, job_data):
+        """should return an array with 2 jobs"""
+
+        host, port_http, port_grpc = connection
+        j = JobConnection(
+            host=host,
+            http_port=port_http,
+            grpc_port=port_grpc,
+            secure_connection=False,
+        )
+        p = Plugin(host=host, port=port_http, secure_connection=False)
+
+        p.add_plugin(plugin_name)
+
+        j.send_job(job_data)
+        j.send_job(job_data)
+
+        jobs = j.get_all_jobs()
+
+        assert len(jobs) == 2
+
+    def test_delete_job(self, connection, plugin_name, job_data):
+        """should delete a job with no errors"""
+
+        host, port_http, port_grpc = connection
+
+        j = JobConnection(
+            host=host, http_port=port_http, grpc_port=port_grpc, secure_connection=False
+        )
+        p = Plugin(host=host, port=port_http, secure_connection=False)
+
+        p.add_plugin(plugin_name)
+
+        job_id = j.send_job(job_data)
+
+        job_status = "pending"
+        while job_status in ["pending", "running"]:
+            sleep(2)
+            data = j.get_job_data(job_id)
+            job_status = data["status"]
+
+        if job_status == "failed":
+            pytest.fail()
+
+        j.delete_job(job_id)

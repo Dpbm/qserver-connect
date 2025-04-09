@@ -33,6 +33,7 @@ class Plugin:
         status_code = int(HTTPStatus.BAD_REQUEST)
 
         try:
+
             result = req.post(url, timeout=TIMEOUT_TIME)
             status_code = result.status_code
 
@@ -40,7 +41,7 @@ class Plugin:
             logger.error("Failed on add plugin")
             logger.error(str(error))
             raise FailedOnAddPlugin(name) from error
-
+        print("AAAAADAJHDAJKDHASJKD ", status_code)
         if status_code != HTTPStatus.CREATED:
             raise FailedOnAddPlugin(name)
 

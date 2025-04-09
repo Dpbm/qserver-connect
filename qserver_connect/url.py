@@ -62,3 +62,17 @@ class URL:
         Returns the url for the route which is used to remove plugins.
         """
         return self.get_add_plugin_url(name)
+
+    def get_all_jobs(self, cursor: int) -> str:
+        """
+        Returns the URL to list all jobs from a cursor pointer.
+        """
+        return f"{self._http.get_protocol()}://{self._url}/api/v1/jobs?cursor={cursor}"
+
+    def delete_job(self, job_id: str) -> str:
+        """
+        Returns the URL for delete job.
+        """
+
+        # is the same as get job data, only that HTTP method changes
+        return self.get_job_data_url(job_id)

@@ -19,3 +19,4 @@ dependencies:
           - types-setuptools
           - types-protobuf
           - types-requests
+          - qiskit_qasm3_import

@@ -9,7 +9,13 @@ from .data_types import (
     JobId,
     AllData,
 )
-from .exceptions import FailedOnGetJobResult, FailedOnGetJobData, JobNotFound
+from .exceptions import (
+    FailedOnGetJobResult,
+    FailedOnGetJobData,
+    JobNotFound,
+    FailedOnGetJobsData,
+    FailedOnDeleteJob,
+)
 from .constants import TIMEOUT_TIME
 from .job import Job
 from .jobs_pb2 import JobData, JobProperties  # pylint: disable=no-name-in-module
@@ -180,3 +186,52 @@ class JobConnection:
             raise FailedOnGetJobResult()
 
         return json_data
+
+    def get_all_jobs(self, cursor: int = 0) -> Response:
+        """
+        Get all jobs starting at cursor.
+        """
+
+        logger.debug("getting all jobs starting at: %d", cursor)
+        url = self._http_handler.get_all_jobs(cursor)
+        logger.debug("using url: %s", url)
+
+        json_data = []
+        response_status = int(HTTPStatus.INTERNAL_SERVER_ERROR)
+
+        try:
+            response_data = req.get(url, timeout=TIMEOUT_TIME)
+            json_data = response_data.json()
+            response_status = response_data.status_code
+
+        except Exception as error:
+            logger.error("Failed on get all jobs data")
+            logger.error(str(error))
+            raise FailedOnGetJobsData() from error
+
+        if response_status != HTTPStatus.OK:
+            raise FailedOnGetJobsData()
+
+        return json_data
+
+    def delete_job(self, job_id: str):
+        """
+        Delete a job by its ID.
+        """
+        logger.debug("deleting job with ID: %s", job_id)
+        url = self._http_handler.delete_job(job_id)
+        logger.debug("using url: %s", url)
+
+        response_status = int(HTTPStatus.INTERNAL_SERVER_ERROR)
+
+        try:
+            response_data = req.delete(url, timeout=TIMEOUT_TIME)
+            response_status = response_data.status_code
+
+        except Exception as error:
+            logger.error("Failed on delete your job")
+            logger.error(str(error))
+            raise FailedOnDeleteJob(job_id) from error
+
+        if response_status != HTTPStatus.OK:
+            raise FailedOnDeleteJob(job_id)

@@ -16,6 +16,24 @@ class FailedOnGetJobData(Exception):
         super().__init__("Failed on get your job data!")
 
 
+class FailedOnGetJobsData(Exception):
+    """
+    Exception for when an error has occoured during the retrieving of all jobs data.
+    """
+
+    def __init__(self):
+        super().__init__("Failed on get jobs data!")
+
+
+class FailedOnDeleteJob(Exception):
+    """
+    Exception for when an error has occoured during deleting a job.
+    """
+
+    def __init__(self, job_id: str):
+        super().__init__(f"Failed on Delete job with id: {job_id}")
+
+
 class JobNotFound(Exception):
     """
     Exception for when your job id wasn't found.

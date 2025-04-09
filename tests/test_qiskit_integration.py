@@ -1,6 +1,7 @@
 import os
 import pytest
 from qiskit import QuantumCircuit
+from qiskit import qasm3
 from qserver_connect import Qiskit
 from qserver_connect.exceptions import InvalidResultTypes, InvalidObservables
 
@@ -164,7 +165,7 @@ class TestQiskit:
 
         assert os.path.exists(qasm_path) is True
 
-        qasm_qc = QuantumCircuit.from_qasm_file(qasm_path)
+        qasm_qc = qasm3.load(qasm_path)
 
         assert qasm_qc.num_qubits == total_qubits
         assert qasm_qc.depth() == 0

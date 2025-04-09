@@ -1,6 +1,8 @@
 from typing import Dict, Any, TypedDict, Tuple, List, Optional
 
-Response = Dict[str, Any]
+Json = Dict[str, Any]
+
+Response = Json | List[Json]
 Metadata = Dict[str, Any]
 QasmPath = str
 UseCounts = bool

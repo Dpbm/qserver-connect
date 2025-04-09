@@ -9,7 +9,7 @@ from ..exceptions import (
 )
 
 try:
-    from qiskit import qasm2
+    from qiskit import qasm3
 except ImportError as error:
     raise QiskitError() from error
 
@@ -62,7 +62,7 @@ class Qiskit(Adapter):
                 logger.debug("file will be exported to: %s", qasm_path)
 
                 with open(qasm_path, "w", encoding="utf-8") as qasm_file:
-                    qasm2.dump(qc, qasm_file)
+                    qasm3.dump(qc, qasm_file)
 
                 logger.debug("filed exported successfully")
                 logger.debug("job created successfully")
