@@ -12,8 +12,21 @@ def connection():
     """
 
     host = os.getenv("HOST")
-    port_http = int(os.getenv("PORT_HTTP"))
-    port_grpc = int(os.getenv("PORT_GRPC"))
+    port_http = 8080
+    port_grpc = 50051
+
+    return (host, port_http, port_grpc)
+
+
+@pytest.fixture
+def connection_secure():
+    """
+    get variables related to the connection with the backend using tls
+    """
+
+    host = os.getenv("HOST")
+    port_http = 443
+    port_grpc = 443
 
     return (host, port_http, port_grpc)
 

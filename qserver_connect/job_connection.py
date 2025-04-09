@@ -104,17 +104,11 @@ class JobConnection:
         self._http_handler = URL(host, http_port, http=HTTP(secure_connection))
         self._grpc_handler = URL(host, grpc_port, http=HTTP(secure_connection))
 
-    def send_job(self, job_data: Job) -> JobId:
+    def _grpc_insecure(self, url: str, job_data: Job) -> JobId:
         """
-        Stream job data through GRPC.
+        Send job without encryption.
         """
 
-        logger.debug("adding job")
-        url = self._grpc_handler.get_add_job_url()
-        logger.debug("using url: %s", url)
-
-        # pylint: disable=fixme
-        # TODO: add secure channel
         with grpc.insecure_channel(url, compression=grpc.Compression.Gzip) as channel:
 
             stub = JobsStub(channel)
@@ -128,6 +122,42 @@ class JobConnection:
             logger.debug("Got job id: %s", job_id)
 
             return job_id
+
+    def _grpc_secure(self, url: str, job_data: Job) -> JobId:
+        """
+        Send job with tls certificate.
+        """
+
+        credentials = grpc.ssl_channel_credentials()
+        with grpc.secure_channel(
+            url, compression=grpc.Compression.Gzip, credentials=credentials
+        ) as channel:
+
+            stub = JobsStub(channel)
+
+            data = job_data.data
+            logger.debug("Sending data with TLS: %s", data)
+            # once the grpc server checks the data an raise an error when
+            # it doesn't match with the schema, we don't need to recheck the data here
+            job = stub.AddJob(Data(data))
+            job_id = str(job.id)
+            logger.debug("Got job id: %s", job_id)
+
+            return job_id
+
+    def send_job(self, job_data: Job) -> JobId:
+        """
+        Stream job data through GRPC.
+        """
+
+        logger.debug("adding job")
+        url = self._grpc_handler.get_add_job_url()
+        logger.debug("using url: %s", url)
+
+        if not self._secure:
+            return self._grpc_insecure(url, job_data)
+
+        return self._grpc_secure(url, job_data)
 
     def get_job_data(self, job_id: str) -> Response:
         """

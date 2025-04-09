@@ -126,3 +126,28 @@ class TestJobs:
             pytest.fail()
 
         j.delete_job(job_id)
+
+    def test_https(self, connection_secure, plugin_name, job_data):
+        """should add a job with no connection problems"""
+
+        host, port_https, port_grpc = connection_secure
+
+        j = JobConnection(
+            host=host, http_port=port_https, grpc_port=port_grpc, secure_connection=True
+        )
+        p = Plugin(host=host, port=port_https, secure_connection=True)
+
+        p.add_plugin(plugin_name)
+
+        job_id = j.send_job(job_data)
+
+        job_status = "pending"
+        while job_status in ["pending", "running"]:
+            sleep(2)
+            data = j.get_job_data(job_id)
+            job_status = data["status"]
+
+        if job_status == "failed":
+            pytest.fail()
+
+        j.delete_job(job_id)

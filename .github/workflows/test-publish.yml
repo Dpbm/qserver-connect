@@ -27,8 +27,12 @@ jobs:
             - name: setup server
               run: |
                   git clone https://github.com/Dpbm/qserver.git && \
-                  cd qserver && \
-                  docker compose -f ./dev-compose.yml up -d --build && \
+                  sudo echo "127.0.0.1 ${{ secrets.HOST }}" | sudo tee -a /etc/hosts && \
+                  cd qserver/certs && \
+                  chmod +x generate-ci-certs.sh && \
+                  ./generate-ci-certs.sh ${{ secrets.HOST }} && \
+                  cd .. && \
+                  DOMAIN=${{ secrets.HOST }} docker compose -f ./dev-compose.yml up -d --build && \
                   rm -rf qserver
 
             - uses: actions/checkout@v4
@@ -42,7 +46,9 @@ jobs:
                   pip install -r requirements.txt -r dev-requirements.txt
 
             - name: Run tox checks
-              run: tox
+              run: |
+                export HOST=${{ secrets.HOST }} &&
+                tox
 
     publish:
         name: Upload package to PYPI
