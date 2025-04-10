@@ -13,7 +13,7 @@ def connection():
 
     host = os.getenv("HOST")
     port_http = 8080
-    port_grpc = 50051
+    port_grpc = 8080
 
     return (host, port_http, port_grpc)
 
