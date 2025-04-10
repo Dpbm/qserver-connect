@@ -1,4 +1,5 @@
 import json
+import os
 import logging
 from http import HTTPStatus
 import requests as req
@@ -128,7 +129,16 @@ class JobConnection:
         Send job with tls certificate.
         """
 
-        credentials = grpc.ssl_channel_credentials()
+        # pylint: disable=line-too-long
+        # FROM: https://stackoverflow.com/questions/72230151/how-to-open-a-secure-channel-in-python-grpc-client-without-a-client-ssl-certific/72346632
+        certificate_path = os.environ.get("GRPC_DEFAULT_SSL_ROOTS_FILE_PATH")
+
+        if certificate_path is not None and len(certificate_path.strip()) > 0:
+            with open(certificate_path, "rb") as cert_file:
+                credentials = grpc.ssl_channel_credentials(cert_file.read())
+        else:
+            credentials = grpc.ssl_channel_credentials()
+
         with grpc.secure_channel(
             url, compression=grpc.Compression.Gzip, credentials=credentials
         ) as channel:
