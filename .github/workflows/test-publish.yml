@@ -27,7 +27,7 @@ jobs:
             - name: setup server
               run: |
                   git clone https://github.com/Dpbm/qserver.git && \
-                  sudo echo "127.0.0.1 ${{ secrets.HOST }}" | sudo tee -a /etc/hosts && \
+                  sudo echo "172.18.0.30 ${{ secrets.HOST }}" | sudo tee -a /etc/hosts && \
                   cd qserver/certs && \
                   chmod +x generate-ci-certs.sh && \
                   ./generate-ci-certs.sh ${{ secrets.HOST }} && \
