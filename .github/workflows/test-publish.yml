@@ -48,7 +48,7 @@ jobs:
             - name: Run tox checks
               run: |
                 export HOST="${{ secrets.HOST }}" &&
-                export REQUEST_BUNDLE="/etc/letsencrypt/archive/${{ secrets.HOST }}/fullchain1.pem" &&
+                export CERT_FILE="/etc/letsencrypt/archive/${{ secrets.HOST }}/fullchain1.pem" &&
                 tox
 
     publish:
