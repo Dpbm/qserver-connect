@@ -132,6 +132,7 @@ class JobConnection:
         # pylint: disable=line-too-long
         # FROM: https://stackoverflow.com/questions/72230151/how-to-open-a-secure-channel-in-python-grpc-client-without-a-client-ssl-certific/72346632
         certificate_path = os.environ.get("GRPC_DEFAULT_SSL_ROOTS_FILE_PATH")
+        credentials = None
 
         if certificate_path is not None and len(certificate_path.strip()) > 0:
             with open(certificate_path, "rb") as cert_file:
