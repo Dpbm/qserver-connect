@@ -31,11 +31,11 @@ class Qiskit(Adapter):
         Method to retrieve all data necessary to run the job from a qiskit QuantumCircuit object.
         """
 
-        expval = data["expval"]
-        counts = data["counts"]
-        quasi_dist = data["quasi_dist"]
-        obs = data["obs"]
-        shots = data["shots"]
+        expval = data.get("expval")
+        counts = data.get("counts")
+        quasi_dist = data.get("quasi_dist")
+        obs = data.get("obs")
+        shots = data.get("shots")
 
         if not any([counts, quasi_dist, expval]):
             raise InvalidResultTypes()
@@ -70,9 +70,9 @@ class Qiskit(Adapter):
                 return Job(
                     {
                         "simulator": data["backend"],
-                        "counts": counts,
-                        "expval": expval,
-                        "quasi_dist": quasi_dist,
+                        "counts": counts,  # type: ignore
+                        "expval": expval,  # type: ignore
+                        "quasi_dist": quasi_dist,  # type: ignore
                         "metadata": metadata,
                         "qasm": qasm_path,
                     }

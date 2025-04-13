@@ -169,3 +169,33 @@ class TestQiskit:
 
         assert qasm_qc.num_qubits == total_qubits
         assert qasm_qc.depth() == 0
+
+    def test_job_with_missing_parameters(self, connection, backend):
+        """should raise no error"""
+        host, port_http, port_grpc = connection
+
+        q = Qiskit(host, port_http, port_grpc)
+
+        total_qubits = 3
+        qc = QuantumCircuit(total_qubits)
+
+        job = q.create_job(
+            qc,
+            {
+                "backend": backend,
+                "counts": True,
+                "quasi_dist": False,
+                "expval": False,
+                "shots": None,
+                "obs": None,
+            },
+        )
+
+        data = job.data
+
+        assert data["simulator"] == backend
+        assert data["counts"] is True
+        assert data["quasi_dist"] is False
+        assert data["expval"] is False
+        assert data["metadata"] == {}
+        assert os.path.exists(data["qasm"]) is True
