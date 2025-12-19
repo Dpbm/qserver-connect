@@ -11,8 +11,7 @@ def get_requirements():
 
 
 def get_long_description():
-    """
-    Fit readme.md into a string
+    """ Fit readme.md into a string
     """
 
     with open("README.md", "r", encoding="UTF-8") as file:
@@ -21,7 +20,7 @@ def get_long_description():
 
 setup(
     name="qserver_connect",
-    version="0.0.22",
+    version="0.0.3",
     install_requires=get_requirements(),
     packages=find_packages(exclude=["tests"]),
     classifiers=[
